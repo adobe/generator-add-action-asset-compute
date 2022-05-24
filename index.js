@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Adobe. All rights reserved.
+Copyright 2022 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License. You may obtain a copy
 of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -9,108 +9,55 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
+// #########################################################################################
+// 3rd party template
+// #########################################################################################
+
 const path = require('path')
-const upath = require('upath')
+const { ActionGenerator } = require('@adobe/generator-app-common-lib')
 
-const Generator = require('yeoman-generator')
-
-const { constants, utils } = require('@adobe/generator-app-common-lib')
-const { runtimeManifestKey } = constants
-
-/*
-      'initializing',
-      'prompting',
-      'configuring',
-      'default',
-      'writing',
-      'conflicts',
-      'install',
-      'end'
-      */
-
-class DxAssetComputeWorker1 extends Generator {
+class AssetComputeGenerator extends ActionGenerator {
   constructor (args, opts) {
     super(args, opts)
-
-    // options are inputs from CLI or yeoman parent generator
-    this.option('skip-prompt', { default: false })
+    this.props = {}
   }
 
-  async initializing () {
-    // all paths are relative to root
-    this.extFolder = 'src/dx-asset-compute-worker-1'
-    this.actionFolder = path.join(this.extFolder, 'actions')
-    this.extConfigPath = path.join(this.extFolder, 'ext.config.yaml')
-    this.configName = 'dx/asset-compute/worker/1'
-    // generate the nui action
-    this.composeWith(path.join(__dirname, './templates/add-action/asset-compute'), {
-      // forward needed args
-      'skip-prompt': true, // do not prompt for action name
-      'action-folder': this.actionFolder,
-      'config-path': this.extConfigPath,
-      'full-key-to-manifest': runtimeManifestKey
+  async prompting () {
+    this.props.actionName = await this.promptForActionName('extends the Adobe Asset Compute service', 'worker')
+  }
+
+  writing () {
+    this.sourceRoot(path.join(__dirname, './templates'))
+
+    this.addAction(this.props.actionName, './_worker.js', {
+      tplContext: this.props,
+      dependencies: {
+        '@adobe/asset-compute-sdk': '^4.0.2'
+      },
+      devDependencies: {
+        '@adobe/aio-cli-plugin-asset-compute': '^2.0.1'
+      },
+      actionManifestConfig: {
+        limits: {
+          concurrency: 10
+        },
+        annotations: {
+          'require-adobe-auth': true
+        }
+      }
     })
-  }
 
-  async writing () {
-    const unixExtConfigPath = upath.toUnix(this.extConfigPath)
-    // add the extension point config in root
-    utils.writeKeyAppConfig(
-      this,
-      // key
-      'extensions.' + this.configName,
-      // value
-      {
-        $include: unixExtConfigPath
-      }
+    const extFolder = path.dirname(this.configPath)
+
+    // TODO add support in ActionGenerator for copying test folders instead of files
+    const destTestFolder = this.destinationPath(extFolder, 'test', 'asset-compute', this.props.actionName)
+    const workerTemplateTestFiles = `${this.templatePath()}/test/` // copy the rest of the worker template files
+    this.fs.copyTpl(
+      workerTemplateTestFiles,
+      destTestFolder,
+      this.props
     )
-
-    // add required dotenv vars
-    utils.appendStubVarsToDotenv(
-      this,
-      'please provide the following environment variables for the Asset Compute devtool. You can use AWS or Azure, not both:',
-      [
-        'ASSET_COMPUTE_PRIVATE_KEY_FILE_PATH',
-        'S3_BUCKET',
-        'AWS_ACCESS_KEY_ID',
-        'AWS_SECRET_ACCESS_KEY',
-        'AWS_REGION',
-        'AZURE_STORAGE_ACCOUNT',
-        'AZURE_STORAGE_KEY',
-        'AZURE_STORAGE_CONTAINER_NAME'
-      ]
-    )
-
-    // add extension point operation
-    utils.writeKeyYAMLConfig(
-      this,
-      this.extConfigPath,
-      // key
-      'operations', {
-        workerProcess: [
-          { type: 'action', impl: 'dx-asset-compute-worker-1/worker' }
-        ]
-      }
-    )
-
-    // add hooks to ext config
-    utils.writeKeyYAMLConfig(
-      this,
-      this.extConfigPath,
-      // key
-      'hooks',
-      // value
-      {
-        'post-app-run': 'adobe-asset-compute devtool',
-        test: 'adobe-asset-compute test-worker'
-      }
-    )
-
-    // add actions path, relative to config path
-    utils.writeKeyYAMLConfig(this, this.extConfigPath, 'actions', path.relative(this.extFolder, this.actionFolder))
-
-    // TODO add .npmignore and readme
   }
 }
 
-module.exports = DxAssetComputeWorker1
+module.exports = AssetComputeGenerator
