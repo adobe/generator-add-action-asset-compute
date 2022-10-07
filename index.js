@@ -35,7 +35,7 @@ class AssetComputeGenerator extends ActionGenerator {
         '@adobe/asset-compute-sdk': '^4.0.2'
       },
       devDependencies: {
-        '@adobe/aio-cli-plugin-asset-compute': '^2.0.1'
+        '@adobe/aio-cli-plugin-asset-compute': '^4.0.1'
       },
       actionManifestConfig: {
         limits: {
