@@ -1,6 +1,6 @@
 {
   "name": "@adobe/generator-add-action-asset-compute",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Extensibility template for generator-aio-app",
   "main": "index.js",
   "engines": {
