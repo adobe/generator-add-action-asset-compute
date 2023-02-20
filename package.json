@@ -40,7 +40,7 @@
     "jest": "^27",
     "stdout-stderr": "^0.1.13",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^6.0.0",
+    "yeoman-test": "^7.3.0",
     "yeoman-environment": "^3.2.0",
     "lodash.clonedeep": "^4.5.0",
     "js-yaml": "^4.1.0"
