@@ -28,7 +28,7 @@
   "author": "Adobe Inc.",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/jest": "^25.1.0",
+    "@types/jest": "^29.5.7",
     "eol": "^0.9.1",
     "eslint": "^7.1.0",
     "eslint-config-standard": "^14.1.0",
