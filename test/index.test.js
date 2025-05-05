@@ -55,7 +55,7 @@ function assertManifestContent (actionName, pkgName) {
   expect(json.runtimeManifest.packages[pkgName].actions[actionName]).toEqual({
     function: `actions/${actionName}/index.js`,
     web: 'yes',
-    runtime: 'nodejs:18',
+    runtime: 'nodejs:22',
     limits: {
       concurrency: 10
     },
@@ -101,7 +101,7 @@ describe('run', () => {
     assertActionCodeContent(actionName)
     assertManifestContent(actionName)
     assertEnvContent(prevDotEnvContent)
-    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@openwhisk/wskdebug': expect.any(String), '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
+    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
     assertNodeEngines(fs, '>=18')
   })
 
@@ -133,7 +133,7 @@ describe('run', () => {
     assertActionCodeContent(actionName)
     assertManifestContent(actionName, 'somepackagename')
     assertEnvContent(prevDotEnvContent)
-    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@openwhisk/wskdebug': expect.any(String), '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
+    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
     assertNodeEngines(fs, '>=18')
   })
 
@@ -156,7 +156,7 @@ describe('run', () => {
     assertActionCodeContent(actionName)
     assertManifestContent(actionName)
     assertEnvContent(prevDotEnvContent)
-    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@openwhisk/wskdebug': expect.any(String), '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
+    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
     assertNodeEngines(fs, '>=18')
   })
 
@@ -177,7 +177,7 @@ describe('run', () => {
     assertActionCodeContent(actionName)
     assertManifestContent(actionName)
     assertEnvContent(prevDotEnvContent)
-    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@openwhisk/wskdebug': expect.any(String), '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
+    assertDependencies(fs, { '@adobe/asset-compute-sdk': expect.any(String) }, { '@adobe/aio-cli-plugin-asset-compute': expect.any(String) })
     assertNodeEngines(fs, '>=18')
   })
 
