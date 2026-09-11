@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 /*
 Copyright 2022 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -10,16 +9,16 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-const helpers = require('yeoman-test')
-const assert = require('yeoman-assert')
-const fs = require('fs')
-const yaml = require('js-yaml')
-const path = require('path')
-const { EOL } = require('os')
-const cloneDeep = require('lodash.clonedeep')
+import helpers from 'yeoman-test'
+import assert from 'yeoman-assert'
+import fs from 'node:fs'
+import yaml from 'js-yaml'
+import path from 'node:path'
+import { EOL } from 'node:os'
+import cloneDeep from 'lodash.clonedeep'
 
-const AssetComputeGenerator = require('../index')
-const Generator = require('yeoman-generator')
+import AssetComputeGenerator from '../index.js'
+import Generator from 'yeoman-generator'
 
 describe('prototype', () => {
   test('exports a yeoman generator', () => {
