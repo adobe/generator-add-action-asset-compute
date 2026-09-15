@@ -1,6 +1,6 @@
 {
   "name": "@adobe/generator-add-action-asset-compute",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Extensibility template for generating an Adobe Asset Compute action",
   "type": "module",
   "main": "index.js",
